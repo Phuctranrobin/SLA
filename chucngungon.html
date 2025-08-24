@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Ngủ Ngon</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0c0a1a;
+        }
+
+        .night-sky {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+        }
+
+        .moon {
+            position: absolute;
+            top: 10%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            background-color: #f0e68c;
+            border-radius: 50%;
+            box-shadow: 0 0 40px #f0e68c, 0 0 80px #f0e68c;
+            animation: gentle-sway 10s ease-in-out infinite;
+        }
+
+        @keyframes gentle-sway {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.5; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .message-container {
+            text-align: center;
+            color: white;
+            z-index: 10;
+            animation: fadeIn 3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 4rem;
+            margin: 0;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+            /* --- HIỆU ỨNG MỚI: Chữ tỏa sáng --- */
+            animation: pulse-text 4s ease-in-out infinite;
+        }
+
+        /* --- HIỆU ỨNG MỚI --- */
+        @keyframes pulse-text {
+            0%, 100% {
+                text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+            }
+            50% {
+                text-shadow: 0 0 30px rgba(255, 255, 220, 1);
+            }
+        }
+        
+        /* --- HIỆU ỨNG MỚI: Sao băng --- */
+        .shooting-star {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(-45deg, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7));
+            animation: shoot linear infinite;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(400px); /* Sao băng sẽ bay 1 đoạn 400px */
+            }
+        }
+
+        /* --- HIỆU ỨNG MỚI: Đom đóm --- */
+        .firefly {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: #76ff03;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #76ff03, 0 0 20px #76ff03;
+            animation: drift ease-in-out infinite;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        #music-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid white;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        #music-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="night-sky" id="sky">
+        <div class="moon"></div>
+        <div class="message-container">
+            <h1>Chúc Lan Anh của tớ ngủ ngon nhé</h1>
+        </div>
+    </div>
+
+    <button id="music-toggle">🎵</button>
+
+    <audio id="lullaby" loop>
+        <source src="https://actions.google.com/sounds/v1/ambiences/wind_in_trees.ogg" type="audio/ogg">
+    </audio>
+
+    <script>
+        const sky = document.getElementById('sky');
+
+        // Tạo sao lấp lánh
+        const numberOfStars = 150;
+        for (let i = 0; i < numberOfStars; i++) {
+            let star = document.createElement('div');
+            star.className = 'star';
+            let size = Math.random() * 3;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 2 + 's';
+            star.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
+            sky.appendChild(star);
+        }
+        
+        // --- HIỆU ỨNG MỚI ---
+        // Tạo sao băng
+        const numberOfShootingStars = 3;
+        for (let i = 0; i < numberOfShootingStars; i++) {
+            let star = document.createElement('div');
+            star.className = 'shooting-star';
+            star.style.top = Math.random() * 60 + '%'; // Chỉ xuất hiện ở nửa trên màn hình
+            star.style.left = '-100px'; // Bắt đầu từ bên ngoài màn hình
+            star.style.width = (Math.random() * 80 + 70) + 'px'; // Độ dài ngẫu nhiên
+            star.style.animationDelay = Math.random() * 10 + 's';
+            star.style.animationDuration = (Math.random() * 2 + 1) + 's';
+            sky.appendChild(star);
+        }
+
+        // Tạo đom đóm
+        const numberOfFireflies = 10;
+        for (let i = 0; i < numberOfFireflies; i++) {
+            let firefly = document.createElement('div');
+            firefly.className = 'firefly';
+            firefly.style.left = Math.random() * 100 + '%';
+            firefly.style.bottom = '0px'; // Bắt đầu từ dưới
+            firefly.style.animationDelay = Math.random() * 8 + 's';
+            firefly.style.animationDuration = (Math.random() * 5 + 5) + 's'; // Bay chậm
+            sky.appendChild(firefly);
+        }
+        // --- KẾT THÚC HIỆU ỨNG MỚI ---
+
+        // Xử lý bật/tắt nhạc
+        const musicToggle = document.getElementById('music-toggle');
+        const lullaby = document.getElementById('lullaby');
+        let isPlaying = false;
+        musicToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                lullaby.pause();
+                musicToggle.textContent = '🎵';
+            } else {
+                lullaby.play();
+                musicToggle.textContent = '🔇';
+            }
+            isPlaying = !isPlaying;
+        });
+    </script>
+
+</body>
+</html>
