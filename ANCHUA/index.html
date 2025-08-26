@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cậu ăn cơm chưa?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            background-image: url('https://i.pinimg.com/originals/f7/32/23/f73223349d52b141103a033503f19154.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #5C3D2E;
+            overflow: hidden;
+        }
+
+        /* --- PHẦN MỚI: Màn hình chờ --- */
+        #welcome-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url(image.webp);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #start-button {
+            padding: 20px 40px;
+            font-size: 1.5em;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            border-radius: 15px;
+            background-color: #ffbf00;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        #start-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Ẩn nội dung chính khi màn hình chờ đang hiện */
+        .hidden {
+            display: none !important;
+        }
+        /* --- HẾT PHẦN MỚI --- */
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.88);
+            padding: 40px 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            color: white;
+            font-weight: 700;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        #yesBtn { background-color: #A0D995; }
+        #noBtn { background-color: #FF7D7D; }
+        button:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15); }
+        button:active { transform: translateY(-2px); }
+
+        #message {
+            margin-top: 30px;
+            font-size: 1.5em;
+            font-weight: 500;
+            min-height: 50px;
+        }
+
+        .food-item {
+            position: fixed;
+            bottom: -100px;
+            font-size: 40px;
+            animation: floatUp 10s linear infinite;
+            opacity: 0.8;
+            z-index: -1;
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+            to { transform: translateY(-120vh) rotate(720deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="welcome-screen">
+        <button id="start-button">💕 Này cậu oiii 💕</button>
+    </div>
+
+    <div class="container hidden">
+        <h1>Cậu đã ăn cơm chưa?</h1>
+        <div class="buttons">
+            <button id="yesBtn">Rồi ạ</button>
+            <button id="noBtn">Chưa á</button>
+        </div>
+        <p id="message"></p>
+    </div>
+
+    <audio id="popSound" src="soundclick.mp3" preload="auto"></audio>
+    <audio id="backgroundMusic" src="mainsound.mp3" loop></audio> <script>
+        // --- TOÀN BỘ PHẦN SCRIPT ĐÃ ĐƯỢC CẬP NHẬT ---
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const startButton = document.getElementById('start-button');
+        const mainContainer = document.querySelector('.container');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        
+        // Khi người dùng nhấn nút bắt đầu
+        startButton.addEventListener('click', () => {
+            // 1. Phát nhạc nền
+            backgroundMusic.play();
+            
+            // 2. Ẩn màn hình chờ đi
+            welcomeScreen.classList.add('hidden');
+            
+            // 3. Hiển thị nội dung chính
+            mainContainer.classList.remove('hidden');
+        });
+
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const message = document.getElementById('message');
+        const popSound = document.getElementById('popSound');
+
+        function handleButtonClick(text, sound) {
+            sound.currentTime = 0; 
+            sound.play();
+            message.textContent = text;
+        }
+
+        yesBtn.addEventListener('click', () => {
+            handleButtonClick("Cậu giỏi lắm, vậy tớ an tâm rồi =)))", popSound);
+        });
+
+        noBtn.addEventListener('click', () => {
+            handleButtonClick("Cậu đi ăn ngay cho tôi!!!", popSound);
+        });
+
+        // Tạo hiệu ứng đồ ăn bay (giữ nguyên)
+        const foods = ['🍕', '🍔', '🍟', '🍩', '🍪', '🍰', '🍣', '🍜', '🍙', '🍓'];
+        function createFood() {
+            const food = document.createElement('div');
+            food.classList.add('food-item');
+            food.textContent = foods[Math.floor(Math.random() * foods.length)];
+            food.style.left = `${Math.random() * 100}vw`;
+            food.style.animationDuration = `${Math.random() * 5 + 8}s`;
+            food.style.fontSize = `${Math.random() * 20 + 20}px`;
+            document.body.appendChild(food);
+            setTimeout(() => { food.remove(); }, 13000);
+        }
+        setInterval(createFood, 500);
+    </script>
+
+</body>
+</html>
